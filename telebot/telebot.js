@@ -1,17 +1,15 @@
 const { Telegraf } = require('telegraf');
-require('dotenv').config(); // Load variables from .env file
 
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const WEB_APP_URL = process.env.WEB_APP_URL;
+const BOT_TOKEN = '7773859219:AAH7Duvqaj5rM4_kGI58mel8ZLtXfLiMG74';
 
 const bot = new Telegraf(BOT_TOKEN);
 
+
 bot.start((ctx) => ctx.reply('Welcome to MeraMoney!', {
     reply_markup: {
-        keyboard: [
-            [{ text: 'Start', web_app: { url: WEB_APP_URL } }],
-        ]
-    }
+        inline_keyboard: [
+            [ {text:'Open app', web_app: {url: 'https://finalcs50-meramoney.vercel.app/'}} ],
+        ]}
 }));
 
 bot.launch();
