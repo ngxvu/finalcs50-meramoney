@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  psql:
+    image: postgres:latest
+    container_name: meramoney-cs50-final
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: meramoney
+    ports:
+      - "5435:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

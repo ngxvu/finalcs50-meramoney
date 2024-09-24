@@ -8,28 +8,29 @@ import (
 	"time"
 
 	_ "github.com/joho/godotenv/autoload"
-
-	"meramoney/internal/database"
 )
 
 type Server struct {
 	port int
+}
 
-	db database.Service
+func (s *Server) CombineRoutes() http.Handler {
+	mux := http.NewServeMux()
+	mux.Handle("/migrate", s.MigrationRoutes())
+	mux.Handle("/status", s.MigrationRoutes())
+	return mux
 }
 
 func NewServer() *http.Server {
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	NewServer := &Server{
 		port: port,
-
-		db: database.New(),
 	}
 
 	// Declare Server config
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", NewServer.port),
-		Handler:      NewServer.RegisterRoutes(),
+		Handler:      NewServer.CombineRoutes(),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
