@@ -28,7 +28,7 @@ func main() {
 
 	// Set up the router
 	r := mux.NewRouter()
-	srv.RegisterRoutes(r)
+	srv.Routes(r)
 
 	// Initialize and start the HTTP server
 	httpServer := server.NewServer(r)

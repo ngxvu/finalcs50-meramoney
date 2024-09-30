@@ -15,10 +15,8 @@ type BaseInt struct {
 
 type User struct {
 	BaseInt
-	FirstName string `json:"first_name" gorm:"type:varchar(100);not null"`
-	LastName  string `json:"last_name" gorm:"type:varchar(100);not null"`
-	UserName  string `json:"user_name" gorm:"type:varchar(100);not null"`
-	PassWord  string `json:"password" gorm:"type:text;not null"`
+	UserName string `json:"user_name" gorm:"type:varchar(100);not null"`
+	Password string `json:"password" gorm:"type:text;not null"`
 }
 
 type Category struct {
