@@ -2,14 +2,38 @@ package main
 
 import (
 	"fmt"
-	"meramoney/internal/server"
+	"log"
+	"meramoney/backend/internal/database"
+	"meramoney/backend/internal/server"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
+	// Initialize the database connection
+	db, err := database.ConnectDatabase()
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
 
-	server := server.NewServer()
+	// Ensure the database connection is closed when the application exits
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatalf("Failed to get sql.DB from GORM DB: %v", err)
+	}
+	defer sqlDB.Close()
 
-	err := server.ListenAndServe()
+	// Initialize the server with the database connection
+	srv := &server.Server{DB: db}
+
+	// Set up the router
+	r := mux.NewRouter()
+	srv.RegisterRoutes(r)
+
+	// Initialize and start the HTTP server
+	httpServer := server.NewServer(r)
+
+	err = httpServer.ListenAndServe()
 	if err != nil {
 		panic(fmt.Sprintf("cannot start server: %s", err))
 	}

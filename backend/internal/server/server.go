@@ -6,31 +6,18 @@ import (
 	"os"
 	"strconv"
 	"time"
-
-	_ "github.com/joho/godotenv/autoload"
 )
 
-type Server struct {
-	port int
-}
-
-func (s *Server) CombineRoutes() http.Handler {
-	mux := http.NewServeMux()
-	mux.Handle("/migrate", s.MigrationRoutes())
-	mux.Handle("/status", s.MigrationRoutes())
-	return mux
-}
-
-func NewServer() *http.Server {
-	port, _ := strconv.Atoi(os.Getenv("PORT"))
-	NewServer := &Server{
-		port: port,
+// NewServer initializes and returns a new HTTP server.
+func NewServer(handler http.Handler) *http.Server {
+	port, err := strconv.Atoi(os.Getenv("PORT"))
+	if err != nil {
+		port = 8080 // Default port if not specified
 	}
 
-	// Declare Server config
 	server := &http.Server{
-		Addr:         fmt.Sprintf(":%d", NewServer.port),
-		Handler:      NewServer.CombineRoutes(),
+		Addr:         fmt.Sprintf(":%d", port),
+		Handler:      handler,
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,

@@ -1,35 +1,40 @@
 package server
 
 import (
-	"log"
+	"encoding/json"
+	"meramoney/backend/infrastructure/domains"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
 
-func (s *Server) MigrationRoutes() http.Handler {
-	r := mux.NewRouter()
-	r.HandleFunc("/migration", s.Migration)
-	return r
+// Server struct with a reference to the database connection
+type Server struct {
+	DB *gorm.DB
+}
+
+func (s *Server) RegisterRoutes(r *mux.Router) {
+	r.HandleFunc("/migrate", s.Migration).Methods("POST")
 }
 
 func (s *Server) Migration(w http.ResponseWriter, r *http.Request) {
+	models := []interface{}{
+		domains.User{},
+		domains.Category{},
+		domains.Transaction{},
+	}
 
-	models := []interface{}{}
-
-	r.DB.Config.NamingStrategy = schema.NamingStrategy{
+	s.DB.Config.NamingStrategy = schema.NamingStrategy{
 		TablePrefix: "public.",
 	}
 
-	if err := r.DB.AutoMigrate(models...); err != nil {
-		return err
-	}
-	return nil
-
-	if err != nil {
-		log.Fatalf("error handling JSON marshal. Err: %v", err)
+	if err := s.DB.AutoMigrate(models...); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	_, _ = w.Write(jsonResp)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Migration successful"})
 }
