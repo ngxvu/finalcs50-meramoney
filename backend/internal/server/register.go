@@ -15,7 +15,7 @@ type SignUpRequest struct {
 	Password string `json:"password"`
 }
 
-func (s *Server) SignUpHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) SignUp(w http.ResponseWriter, r *http.Request) {
 	var req SignUpRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)

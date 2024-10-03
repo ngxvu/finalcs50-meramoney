@@ -16,7 +16,7 @@ type LoginRequest struct {
 }
 
 // LoginHandler handles user login and returns JWT tokens
-func (s *Server) LoginHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	var req LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)

@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-func (s *Server) MigrationHandler(w http.ResponseWriter, r *http.Request) {
+func (s *Server) Migration(w http.ResponseWriter, r *http.Request) {
 	models := []interface{}{
 		domains.User{},
 		domains.Category{},
