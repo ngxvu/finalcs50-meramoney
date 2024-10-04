@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"net/http"
 	"os"
 	"strings"
@@ -51,6 +52,10 @@ func VerifyUserMiddleware(next http.Handler) http.Handler {
 			http.Error(w, "Invalid token", http.StatusUnauthorized)
 			return
 		}
+
+		// Store user information in context
+		ctx := context.WithValue(r.Context(), "user", claims.Username)
+		r = r.WithContext(ctx)
 
 		// Proceed to the next handler
 		next.ServeHTTP(w, r)
