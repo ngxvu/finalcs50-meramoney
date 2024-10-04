@@ -55,3 +55,22 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 		"refresh_token": refreshToken,
 	})
 }
+
+// Logout logs out the user by invalidating their session or token
+func (s *Server) Logout(w http.ResponseWriter, r *http.Request) {
+	// Assuming you are using a token-based authentication system
+	token := r.Header.Get("Authorization")
+	if token == "" {
+		http.Error(w, "Authorization token is required", http.StatusUnauthorized)
+		return
+	}
+
+	// Invalidate the token (this could be done by removing it from a database or cache)
+	if err := s.DB.Exec("DELETE FROM tokens WHERE token = ?", token).Error; err != nil {
+		http.Error(w, "Failed to logout", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Logged out successfully"})
+}

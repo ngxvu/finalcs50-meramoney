@@ -56,12 +56,28 @@ func (s *Server) GetCategory(w http.ResponseWriter, r *http.Request) {
 
 // GetAllCategories retrieves all categories
 func (s *Server) GetAllCategories(w http.ResponseWriter, r *http.Request) {
+	// Parse query parameters for pagination
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	pageSize, err := strconv.Atoi(r.URL.Query().Get("pageSize"))
+	if err != nil || pageSize < 1 {
+		pageSize = 10
+	}
+
+	// Calculate offset
+	offset := (page - 1) * pageSize
+
+	// Retrieve categories with pagination
 	var categories []domains.Category
-	if err := s.DB.Find(&categories).Error; err != nil {
+	if err := s.DB.Limit(pageSize).Offset(offset).Find(&categories).Error; err != nil {
 		http.Error(w, "Failed to retrieve categories", http.StatusInternalServerError)
 		return
 	}
 
+	// Encode the categories to JSON and send the response
 	json.NewEncoder(w).Encode(categories)
 }
 
