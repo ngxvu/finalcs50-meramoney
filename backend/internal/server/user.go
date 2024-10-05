@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+type ProfileResponse struct {
+	Username string `json:"user_name"`
+}
+
 func (s *Server) GetProfile(w http.ResponseWriter, r *http.Request) {
 	username, ok := r.Context().Value("user").(string)
 	if !ok {
@@ -13,13 +17,13 @@ func (s *Server) GetProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user domains.User
-	if err := s.DB.Where("username = ?", username).First(&user).Error; err != nil {
-		http.Error(w, "User not found", http.StatusNotFound)
+	profile, err := s.Profile(username)
+	if err != nil {
+		http.Error(w, "Failed to retrieve user profile", http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(user)
+	json.NewEncoder(w).Encode(profile)
 }
 
 func (s *Server) UpdateProfile(w http.ResponseWriter, r *http.Request) {
@@ -35,10 +39,32 @@ func (s *Server) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.DB.Model(&domains.User{}).Where("username = ?", username).Updates(updatedUser).Error; err != nil {
+	if err := s.DB.Model(&domains.User{}).Where("user_name = ?", username).Updates(updatedUser).Error; err != nil {
 		http.Error(w, "Failed to update user profile", http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(updatedUser)
+	profile, err := s.Profile(updatedUser.UserName)
+	if err != nil {
+		http.Error(w, "Failed to retrieve user profile", http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(profile)
+}
+
+func (s *Server) Profile(username string) (*ProfileResponse, error) {
+	var user domains.User
+
+	if err := s.DB.Where("user_name = ?", username).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	// Create a ProfileResponse without the password field
+	userProfile := &ProfileResponse{
+		Username: user.UserName,
+	}
+
+	return userProfile, nil
+
 }
