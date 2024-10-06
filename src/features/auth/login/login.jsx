@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import './styles.scss'; // Import the SCSS file
 
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -12,15 +13,15 @@ function Login({ onLogin }) {
     };
 
     return (
-        <div>
-            <header style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <img src="/finalcs50-meramoney.png" alt="Logo" style={{ verticalAlign: 'middle', width: '36px', height: 'auto' }} />
-                <span style={{ verticalAlign: 'middle', marginLeft: '10px' }}>meramoney</span>
+        <div className="login-container">
+            <header>
+                <img src="/finalcs50-meramoney.png" alt="Logo" />
+                <span>meramoney</span>
             </header>
-            <p style={{ textAlign: 'center' }}>
+            <p>
                 Don't have an account yet? <a href="/signup">Sign up here</a>
             </p>
-            <div>
+            <div className="form-container">
                 <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -48,7 +49,7 @@ function Login({ onLogin }) {
                     <button type="submit">Login</button>
                 </form>
             </div>
-            <footer style={{ textAlign: 'center', marginTop: '20px' }}>
+            <footer>
                 cs50-final-meramoney - made by Nguyen Xuan Vu
             </footer>
         </div>
