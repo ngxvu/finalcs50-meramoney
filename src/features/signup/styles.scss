@@ -1,0 +1,106 @@
+body {
+    background: #f4f7fa;
+    margin: 0;
+    padding: 0; 
+}
+
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #324C5b;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+    background-color: white;
+
+    img {
+        vertical-align: middle;
+        width: 36px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    span {
+        vertical-align: middle;
+        font-size: 24px;
+        font-weight: bold;
+    }
+}
+
+p {
+    text-align: center;
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.login-container, .signup-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    margin-top: 5%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+
+    div {
+        margin-bottom: 15px;
+    }
+
+    label {
+        margin-bottom: 5px;
+    }
+
+    input, button {
+        width: 80%;
+        padding: 15px;
+        margin: 0 auto 15px auto;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    button {
+        margin-top: 30px;
+        background-color: #7b93A4;
+        color: white;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+            background-color:  #324C5b;
+        }
+    }
+}
+
+.error {
+    color: red;
+    text-align: center;
+}
+
+.success {
+    color: green;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
+    background-color: transparent; // Ensure the footer background is transparent
+}

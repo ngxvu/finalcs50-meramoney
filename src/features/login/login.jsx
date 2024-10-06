@@ -6,15 +6,40 @@ import logo from '../../assests/images/finalcs50-meramoney.png';
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
-    const handleSubmit = (event) => {
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Call the onLogin prop with username and password
-        onLogin({ username, password });
+        setError('');
+        setSuccess('');
+
+        try {
+            const response = await fetch('http://localhost:8989/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_name: username,
+                    password: password,
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            onLogin(data);
+            setSuccess('Login successful!'); // Set success message
+            
+        } catch (error) {
+            setError('Login failed. Please check your username and password.');
+        }
     };
 
     return (
-
         <>
         <header className="banner">
             <img src={logo} alt="Logo" />
@@ -47,6 +72,10 @@ function Login({ onLogin }) {
                         />
                     <button type="submit">Login</button>
                 </form>
+                
+                <footer>
+                    Cs50FinalMeramoney - by Nguyen Xuan Vu
+                </footer>
         </div>
         </>
     );
