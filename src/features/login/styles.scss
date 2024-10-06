@@ -1,23 +1,34 @@
-// Header styles
-header {
+body {
+    background: #f4f7fa;
+    margin: 0;
+    padding: 0; 
+}
+
+
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #324C5b;
+    padding: 20px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: white;
 
     img {
         vertical-align: middle;
         width: 36px;
         height: auto;
+        margin-right: 10px;
     }
 
     span {
         vertical-align: middle;
-        margin-left: 10px;
         font-size: 24px;
         font-weight: bold;
     }
 }
 
-// Paragraph styles
 p {
     text-align: center;
 
@@ -31,17 +42,19 @@ p {
     }
 }
 
-// Form container styles
-div {
+.login-container {
     max-width: 400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    margin-top: 5%;
+
 }
 
-// Form styles
+
 form {
     display: flex;
     flex-direction: column;
@@ -52,29 +65,31 @@ form {
 
     label {
         margin-bottom: 5px;
-        font-weight: bold;
     }
 
-    input {
-        width: 100%;
-        padding: 8px;
+    input, button {
+        width: 80%;
+        padding: 15px;
+        margin: 0 auto 15px auto;
         border: 1px solid #ccc;
         border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
     }
 
     button {
-        padding: 10px;
-        background-color: #007bff;
+        margin-top: 30px;
+        background-color: #7b93A4;
         color: white;
         border: none;
-        border-radius: 4px;
         cursor: pointer;
 
         &:hover {
-            background-color: #0056b3;
+            background-color:  #324C5b;
         }
     }
 }
+
 
 // Footer styles
 footer {
@@ -82,4 +97,5 @@ footer {
     margin-top: 20px;
     font-size: 14px;
     color: #777;
+    background-color: transparent; // Ensure the footer background is transparent
 }

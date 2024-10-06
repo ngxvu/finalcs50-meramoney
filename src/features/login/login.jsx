@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './styles.scss'; // Import the SCSS file
+import logo from '../../assests/images/finalcs50-meramoney.png';
 
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -13,18 +14,19 @@ function Login({ onLogin }) {
     };
 
     return (
+
+        <>
+        <header className="banner">
+            <img src={logo} alt="Logo" />
+            <span>Meramoney</span>
+        </header>
+
         <div className="login-container">
-            <header>
-                <img src="/finalcs50-meramoney.png" alt="Logo" />
-                <span>meramoney</span>
-            </header>
+        <h2>Login to Meramoney</h2>
             <p>
-                Don't have an account yet? <a href="/signup">Sign up here</a>
+                Don't have an account yet? <a href="/signup">Sign up here!</a>
             </p>
-            <div className="form-container">
-                <h2>Login</h2>
                 <form onSubmit={handleSubmit}>
-                    <div>
                         <label htmlFor="username">Username:</label>
                         <input
                             type="text"
@@ -34,8 +36,6 @@ function Login({ onLogin }) {
                             placeholder="Username"
                             required
                         />
-                    </div>
-                    <div>
                         <label htmlFor="password">Password:</label>
                         <input
                             type="password"
@@ -45,14 +45,10 @@ function Login({ onLogin }) {
                             placeholder="Password"
                             required
                         />
-                    </div>
                     <button type="submit">Login</button>
                 </form>
-            </div>
-            <footer>
-                cs50-final-meramoney - made by Nguyen Xuan Vu
-            </footer>
         </div>
+        </>
     );
 }
 
