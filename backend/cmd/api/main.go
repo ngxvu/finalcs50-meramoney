@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
 	"meramoney/backend/internal/database"
 	"meramoney/backend/internal/server"
 
+	"github.com/joho/godotenv"
+
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -38,8 +40,13 @@ func main() {
 	r := mux.NewRouter()
 	srv.Routes(r)
 
-	// Initialize and start the HTTP server
-	httpServer := server.NewServer(r)
+	// Define CORS options
+	corsOptions := handlers.AllowedOrigins([]string{"http://localhost:3000"})
+	corsHeaders := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
+	corsMethods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"})
+
+	// Initialize and start the HTTP server with CORS support
+	httpServer := server.NewServer(handlers.CORS(corsOptions, corsHeaders, corsMethods)(r))
 
 	err = httpServer.ListenAndServe()
 	if err != nil {
