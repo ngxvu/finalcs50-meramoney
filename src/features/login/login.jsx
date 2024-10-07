@@ -16,7 +16,7 @@ function Login({ onLogin }) {
         setSuccess('');
 
         try {
-            const response = await fetch('http://localhost:8989/login', {
+            const response = await fetch('http://143.198.193.9:8989/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
