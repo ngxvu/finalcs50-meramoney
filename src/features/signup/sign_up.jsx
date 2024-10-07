@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Loading from '../../components/loading/loading';
 import './styles.scss';
 import logo from '../../assests/images/finalcs50-meramoney.png';
 
@@ -10,20 +11,23 @@ function SignUp({ onSignUp }) {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const history = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError('');
         setSuccess('');
+        setLoading(true);
 
         if (password !== confirmPassword) {
             setError('Passwords do not match.');
+            setLoading(false); // Hide loading
             return;
         }
 
         try {
-            const response = await fetch('http://localhost:8989/signup', {
+            const response = await fetch('http://143.198.193.9:8989/sign-up', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,17 +39,19 @@ function SignUp({ onSignUp }) {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok'); 
             }
 
             const data = await response.json();
             onSignUp(data);
             setSuccess('Sign-up successful! Redirecting to login page...');
             setTimeout(() => {
-                history.push('/login');
-            }, 2000); // Redirect after 2 seconds
+                setLoading(false);
+                navigate('/login');
+            }, 1000);
         } catch (error) {
             setError('Sign-up failed. Please try again.');
+            setLoading(false); // Hide loading
         }
     };
 
@@ -96,6 +102,7 @@ function SignUp({ onSignUp }) {
                    Cs50FinalMeramoney - by Nguyen Xuan Vu
                 </footer>
             </div>
+            {loading && <Loading message="Processing your request..." />}
         </>
     );
 }
