@@ -31,6 +31,11 @@ function Login({ onLogin }) {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
+            const { accessToken, refreshToken } = data;
+
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+
             onLogin(data);
             setSuccess('Login successful!'); // Set success message
             
