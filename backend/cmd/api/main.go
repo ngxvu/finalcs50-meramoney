@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 	"meramoney/backend/internal/database"
 	"meramoney/backend/internal/server"
@@ -10,6 +11,13 @@ import (
 )
 
 func main() {
+
+	// Load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
 	// Initialize the database connection
 	db, err := database.ConnectDatabase()
 	if err != nil {

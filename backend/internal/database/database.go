@@ -2,13 +2,11 @@ package database
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	_ "github.com/joho/godotenv/autoload"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 // ConnectDatabase initializes and returns a GORM DB instance.
@@ -19,20 +17,16 @@ func ConnectDatabase() (*gorm.DB, error) {
 	username := os.Getenv("DB_USERNAME")
 	port := os.Getenv("DB_PORT")
 	host := os.Getenv("DB_HOST")
-	schema := os.Getenv("DB_SCHEMA")
+	sslmode := "disable" // Set sslmode to disable
 
 	// Create the DSN (Data Source Name)
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable search_path=%s", host, username, password, database, port, schema)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		host, username, password, database, port, sslmode)
 
-	// Open the database connection using GORM
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Printf("Error connecting to database: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("Error connecting to database: %w", err)
 	}
 
-	log.Println("Successfully connected to the database")
 	return db, nil
 }
