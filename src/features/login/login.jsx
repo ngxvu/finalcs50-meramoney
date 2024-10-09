@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './styles.scss'; // Import the SCSS file
+import './styles.scss';
 import logo from '../../assests/images/finalcs50-meramoney.png';
 
 function Login({ onLogin }) {
@@ -46,11 +46,14 @@ function Login({ onLogin }) {
 
     return (
         <>
-        <header className="banner">
-            <img src={logo} alt="Logo" />
-            <span>Meramoney</span>
-        </header>
-
+        <div className="banner-container">
+            <header className="banner">
+                <div className="logo-container">
+                    <img src={logo} alt="Logo" />
+                    <span className="logo-text">Meramoney</span>
+                </div>
+            </header>
+        </div>
         <div className="login-container">
         <h2>Login to Meramoney</h2>
             <p>
@@ -77,11 +80,10 @@ function Login({ onLogin }) {
                         />
                     <button type="submit">Login</button>
                 </form>
-                
-                <footer>
-                    Cs50FinalMeramoney - by Nguyen Xuan Vu
-                </footer>
         </div>
+        <footer>
+                    Cs50FinalMeramoney - by Nguyen Xuan Vu
+        </footer>
         </>
     );
 }

@@ -57,10 +57,14 @@ function SignUp({ onSignUp }) {
 
     return (
         <>
-            <header className="banner">
-                <img src={logo} alt="Logo" />
-                <span>Meramoney</span>
-            </header>
+            <div className="banner-container">
+                <header className="banner">
+                    <div className="logo-container">
+                        <img src={logo} alt="Logo" />
+                        <span className="logo-text">Meramoney</span>
+                    </div>
+                </header>
+            </div>
             <div className="signup-container">
                 <p>
                     Already have an account? <a href="/login">Login here</a>
@@ -98,10 +102,10 @@ function SignUp({ onSignUp }) {
                     />
                     <button type="submit">Sign Up</button>
                 </form>
-                <footer>
-                   Cs50FinalMeramoney - by Nguyen Xuan Vu
-                </footer>
             </div>
+            <footer>
+                   Cs50FinalMeramoney - by Nguyen Xuan Vu
+            </footer>
             {loading && <Loading message="Processing your request..." />}
         </>
     );
