@@ -14,10 +14,8 @@ function Dashboard({ totalBalance, totalPeriodExpenses, totalPeriodIncome }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-
     const handleDateChange = (range) => {
         setSelectedRange(range);
-        //
     };
 
     const handleFilterChange = (event) => {
@@ -25,12 +23,7 @@ function Dashboard({ totalBalance, totalPeriodExpenses, totalPeriodIncome }) {
     };
 
     const handleLogout = () => {
-        // Add your logout logic here
         console.log('User logged out');
-    };
-
-    const handleAddTransaction = (transaction) => {
-        setTransactions([...transactions, transaction]);
     };
 
     useEffect(() => {
@@ -78,15 +71,15 @@ function Dashboard({ totalBalance, totalPeriodExpenses, totalPeriodIncome }) {
                 </div>
                 <div className="overview">
                     <div className="overview-item">
-                        <h3>Total Balance</h3>
+                        <h5>Total Balance</h5>
                         <p>${totalBalance}</p>
                     </div>
                     <div className="overview-item">
-                        <h3>Total Period Expenses</h3>
+                        <h5>Total Period Expenses</h5>
                         <p>${totalPeriodExpenses}</p>
                     </div>
                     <div className="overview-item">
-                        <h3>Total Period Income</h3>
+                        <h5>Total Period Income</h5>
                         <p>${totalPeriodIncome}</p>
                     </div>
                 </div>
@@ -120,7 +113,7 @@ function Dashboard({ totalBalance, totalPeriodExpenses, totalPeriodIncome }) {
                 </div>
             </div>
             <footer>
-                    Cs50FinalMeramoney - by Nguyen Xuan Vu
+                Cs50FinalMeramoney - by Nguyen Xuan Vu
             </footer>
         </>
     );

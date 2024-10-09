@@ -1,3 +1,9 @@
+body {
+    background: #f4f7fa;
+    margin: 0;
+    padding: 0; 
+}
+
 .banner-container {
     display: flex;
     justify-content: center;
@@ -12,7 +18,6 @@
     max-width: 800px;
     padding: 10px 20px;
 }
-
 
 .logo-container {
     display: flex;
@@ -34,6 +39,7 @@
     display: flex;
     align-items: center;
     margin-left: auto;
+    position: relative; /* Add this to position the menu content relative to the menu */
     max-width: 800px;
 }
 
@@ -49,11 +55,12 @@
 .menu-content {
     display: none;
     position: absolute;
+    top: 100%; /* Position below the menu button */
+    right: 0; /* Align to the right edge of the menu */
     background-color: white;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-    right: 0;
 }
 
 .menu-content a,
@@ -112,27 +119,45 @@
     }
 }
 
+.overview {
+    display: flex;
+    justify-content: space-between; /* Distribute space between items */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.overview-item {
+    flex: 1; /* Allow items to grow equally */
+    text-align: center; /* Center text */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px; /* Add margin between items */
+    min-width: 200px; /* Ensure items don't get too small */
+}
+
 .transactions-container {
     display: flex;
     justify-content: space-between;
-    gap: 20px; /* Adjust the gap as needed */
+    gap: 20px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
 }
 
 .transactions {
-    flex: 2; /* Adjust the flex value as needed */
+    flex: 2;
 }
 
 .add-buttons {
-    flex: 1; /* Adjust the flex value as needed */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Adjust the gap as needed */
+    gap: 20px;
 }
 
 .button {
     display: inline-block;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 13px;
     color: white;
     background-color: #007bff;
     border: none;
@@ -140,10 +165,36 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    width: 100%; /* Ensure buttons take full width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .button:hover {
     background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .overview {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+    }
+
+    .overview-item {
+        margin: 10px 0; /* Adjust margin for vertical stacking */
+    }
+
+    .transactions-container {
+        flex-direction: column; /* Stack items vertically on smaller screens */
+    }
+
+    .add-buttons {
+        flex-direction: row; /* Arrange buttons horizontally */
+        justify-content: space-between; /* Distribute space between buttons */
+    }
+
+    .button {
+        flex: 1; /* Allow buttons to grow equally */
+        margin: 0 5px; /* Add margin between buttons */
+    }
 }
 
 footer {
@@ -152,5 +203,4 @@ footer {
     font-size: 14px;
     color: #777;
     background-color: transparent;
-    margin-bottom: 80px;
 }

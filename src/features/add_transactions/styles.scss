@@ -1,0 +1,71 @@
+body {
+    background: #f4f7fa;
+    margin: 0;
+    padding: 0; 
+}
+
+.add-transaction-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 40px 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    margin-top: 5%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        margin-bottom: 5px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+
+        &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        &:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+    }
+
+    .error {
+        color: red;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .success {
+        color: green;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}

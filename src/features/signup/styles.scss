@@ -4,28 +4,37 @@ body {
     padding: 0; 
 }
 
+.banner-container {
+    display: flex;
+    justify-content: center;
+    background-color: #f8f9fa;
+}
+
 .banner {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: #324C5b;
-    padding: 20px;
-    text-align: center;
-    margin-top: 20px;
-    background-color: white;
+    justify-content: center; /* Center horizontally */
+    width: 100%;
+    max-width: 800px;
+    padding: 10px 20px;
+}
 
-    img {
-        vertical-align: middle;
-        width: 36px;
-        height: auto;
-        margin-right: 10px;
-    }
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center horizontally */
+    width: 100%; /* Ensure it takes full width */
+}
 
-    span {
-        vertical-align: middle;
-        font-size: 24px;
-        font-weight: bold;
-    }
+.logo-container img {
+    height: 40px;
+}
+
+.logo-container .logo-text {
+    margin-left: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
 }
 
 p {
@@ -87,21 +96,11 @@ form {
     }
 }
 
-.error {
-    color: red;
-    text-align: center;
-}
-
-.success {
-    color: green;
-    text-align: center;
-}
-
+// Footer styles
 footer {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
     color: #777;
-    background-color: transparent;
-    margin-bottom: 80px;
+    background-color: transparent; // Ensure the footer background is transparent
 }
