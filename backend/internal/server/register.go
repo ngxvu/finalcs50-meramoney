@@ -46,8 +46,13 @@ func (s *Server) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := s.DB.Where("user_name = ?", req.Username).First(&user).Error; err != nil {
+		http.Error(w, "Invalid credentials", http.StatusUnauthorized)
+		return
+	}
+
 	// Generate tokens
-	accessToken, refreshToken, err := auth.GenerateTokens(req.Username)
+	accessToken, refreshToken, err := auth.GenerateTokens(user.ID, user.UserName)
 	if err != nil {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return

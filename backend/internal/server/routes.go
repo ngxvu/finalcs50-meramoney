@@ -15,7 +15,6 @@ func (s *Server) Routes(r *mux.Router) {
 	r.HandleFunc("/migrate", s.Migration).Methods("POST")
 	r.HandleFunc("/sign-up", s.SignUp).Methods("POST")
 	r.HandleFunc("/login", s.Login).Methods("POST")
-	r.HandleFunc("/logout", s.Logout).Methods("POST")
 
 	// Create a subrouter for protected routes
 	protected := r.PathPrefix("/").Subrouter()

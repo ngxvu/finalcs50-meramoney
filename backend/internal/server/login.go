@@ -42,7 +42,7 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Generate tokens
-	accessToken, refreshToken, err := auth.GenerateTokens(req.Username)
+	accessToken, refreshToken, err := auth.GenerateTokens(user.ID, user.UserName)
 	if err != nil {
 		http.Error(w, "Failed to generate tokens", http.StatusInternalServerError)
 		return

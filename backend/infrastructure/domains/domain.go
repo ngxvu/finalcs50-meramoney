@@ -21,6 +21,7 @@ type User struct {
 
 type Category struct {
 	BaseInt
+	UserID      int    `gorm:"not null" json:"user_id"`
 	Name        string `gorm:"type:varchar(100);not null" json:"name"`
 	Description string `gorm:"type:text" json:"description"`
 }

@@ -21,6 +21,7 @@ func init() {
 
 // Claims struct to the JWT claims
 type Claims struct {
+	ID       int    `json:"id"`
 	Username string `json:"username"`
 	jwt.StandardClaims
 }
@@ -54,7 +55,7 @@ func VerifyUserMiddleware(next http.Handler) http.Handler {
 		}
 
 		// Store user information in context
-		ctx := context.WithValue(r.Context(), "user", claims.Username)
+		ctx := context.WithValue(r.Context(), "id", claims.ID)
 		r = r.WithContext(ctx)
 
 		// Proceed to the next handler
@@ -63,9 +64,10 @@ func VerifyUserMiddleware(next http.Handler) http.Handler {
 }
 
 // generateTokens generates a new access token and refresh token
-func GenerateTokens(username string) (string, string, error) {
+func GenerateTokens(id int, username string) (string, string, error) {
 	// Create the claims
 	claims := &Claims{
+		ID:       id,
 		Username: username,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(15 * time.Minute).Unix(),
@@ -81,6 +83,7 @@ func GenerateTokens(username string) (string, string, error) {
 
 	// Create the refresh token with a longer expiration
 	refreshClaims := &Claims{
+		ID:       id,
 		Username: username,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(7 * 24 * time.Hour).Unix(),
