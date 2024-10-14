@@ -70,7 +70,7 @@ func GenerateTokens(id int, username string) (string, string, error) {
 		ID:       id,
 		Username: username,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(15 * time.Minute).Unix(),
+			ExpiresAt: time.Now().Add(2 * 24 * time.Hour).Unix(),
 		},
 	}
 

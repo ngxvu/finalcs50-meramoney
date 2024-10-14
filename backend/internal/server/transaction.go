@@ -99,6 +99,11 @@ func (s *Server) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
 	start := r.URL.Query().Get("start")
 	end := r.URL.Query().Get("end")
 
+	categoryID, err := strconv.Atoi(r.URL.Query().Get("search"))
+	if err != nil {
+		categoryID = 0
+	}
+
 	// Calculate offset
 	offset := (page - 1) * pageSize
 
@@ -111,6 +116,11 @@ func (s *Server) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
 	if start != "" && end != "" {
 		query = query.Where("created_at BETWEEN ? AND ?", start, end)
 	}
+
+	if categoryID != 0 {
+		query = query.Where("category_id = ?", categoryID)
+	}
+
 	if err := query.Where("user_id = ?", userID).Find(&transactions).Error; err != nil {
 		http.Error(w, "Failed to retrieve transactions", http.StatusInternalServerError)
 		return
