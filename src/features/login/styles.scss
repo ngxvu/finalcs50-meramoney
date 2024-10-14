@@ -1,53 +1,7 @@
 body {
-    background: #f4f7fa;
-    margin: 0;
-    padding: 0; 
-}
-
-.banner-container {
     display: flex;
     justify-content: center;
     background-color: #f8f9fa;
-}
-
-.banner {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center horizontally */
-    width: 100%;
-    max-width: 800px;
-    padding: 10px 20px;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center horizontally */
-    width: 100%; /* Ensure it takes full width */
-}
-
-.logo-container img {
-    height: 40px;
-}
-
-.logo-container .logo-text {
-    margin-left: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-}
-
-p {
-    text-align: center;
-
-    a {
-        color: #007bff;
-        text-decoration: none;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
 }
 
 .login-container {
@@ -61,7 +15,7 @@ p {
     margin-top: 5%;
 }
 
-form {
+.login-container form {
     display: flex;
     flex-direction: column;
 
@@ -74,29 +28,28 @@ form {
     }
 
     input, button {
-        width: 80%;
+        width: 300px; /* Ensure both input and button take full width */
         padding: 15px;
         margin: 0 auto 15px auto;
         border: 1px solid #ccc;
         border-radius: 4px;
-        box-sizing: border-box;
+        box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
         font-size: 14px;
     }
 
     button {
         margin-top: 30px;
-        background-color: #7b93A4;
+        background-color: #007bff;
         color: white;
         border: none;
         cursor: pointer;
 
         &:hover {
-            background-color:  #324C5b;
+            background-color: #0056b3;
         }
     }
 }
 
-// Footer styles
 footer {
     text-align: center;
     margin-top: 20px;

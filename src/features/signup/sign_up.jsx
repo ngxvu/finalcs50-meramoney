@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Loading from '../../components/loading/loading';
-import './styles.scss';
+import '../../features/signup/styles.scss';
 import logo from '../../assests/images/finalcs50-meramoney.png';
 
 function SignUp({ onSignUp }) {
@@ -66,10 +66,10 @@ function SignUp({ onSignUp }) {
                 </header>
             </div>
             <div className="signup-container">
+                <h2>Sign Up</h2>
                 <p>
                     Already have an account? <a href="/login">Login here</a>
                 </p>
-                <h2>Sign Up</h2>
                 {error && <p className="error">{error}</p>} {/* Display error message */}
                 {success && <p className="success">{success}</p>} {/* Display success message */}
                 <form onSubmit={handleSubmit}>

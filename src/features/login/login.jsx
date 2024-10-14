@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './styles.scss';
+import '../../features/login/styles.scss';
 import logo from '../../assests/images/finalcs50-meramoney.png';
 
 function Login({ onLogin }) {
