@@ -2,10 +2,9 @@ package server
 
 import (
 	"encoding/json"
-	"net/http"
-
 	"meramoney/backend/infrastructure/domains"
 	auth "meramoney/backend/infrastructure/middlewares"
+	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
 )

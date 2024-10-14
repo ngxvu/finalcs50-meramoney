@@ -10,7 +10,6 @@ import (
 )
 
 type TransactionRequest struct {
-	UserID      int     `json:"user_id"`
 	CategoryID  int     `json:"category_id"`
 	Amount      float64 `json:"amount"`
 	Description string  `json:"description"`
@@ -19,6 +18,13 @@ type TransactionRequest struct {
 
 // CreateTransaction creates a new transaction
 func (s *Server) CreateTransaction(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	var transactionRequest TransactionRequest
 	if err := json.NewDecoder(r.Body).Decode(&transactionRequest); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
@@ -26,7 +32,7 @@ func (s *Server) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var transaction domains.Transaction
-	transaction.UserID = transactionRequest.UserID
+	transaction.UserID = userID
 	transaction.CategoryID = transactionRequest.CategoryID
 	transaction.Amount = transactionRequest.Amount
 	transaction.Description = transactionRequest.Description
@@ -43,6 +49,13 @@ func (s *Server) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 
 // GetTransaction retrieves a transaction by ID
 func (s *Server) GetTransaction(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -51,7 +64,7 @@ func (s *Server) GetTransaction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var transaction domains.Transaction
-	if err := s.DB.First(&transaction, id).Error; err != nil {
+	if err := s.DB.Where("user_id = ?", userID).First(&transaction, id).Error; err != nil {
 		http.Error(w, "Transaction not found", http.StatusNotFound)
 		return
 	}
@@ -61,6 +74,13 @@ func (s *Server) GetTransaction(w http.ResponseWriter, r *http.Request) {
 
 // GetAllTransactions retrieves all transactions
 func (s *Server) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	// Parse query parameters for pagination
 	page, err := strconv.Atoi(r.URL.Query().Get("page"))
 	if err != nil || page < 1 {
@@ -91,7 +111,7 @@ func (s *Server) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
 	if start != "" && end != "" {
 		query = query.Where("created_at BETWEEN ? AND ?", start, end)
 	}
-	if err := query.Find(&transactions).Error; err != nil {
+	if err := query.Where("user_id = ?", userID).Find(&transactions).Error; err != nil {
 		http.Error(w, "Failed to retrieve transactions", http.StatusInternalServerError)
 		return
 	}
@@ -102,6 +122,13 @@ func (s *Server) GetAllTransactions(w http.ResponseWriter, r *http.Request) {
 
 // UpdateTransaction updates a transaction by ID
 func (s *Server) UpdateTransaction(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -110,7 +137,7 @@ func (s *Server) UpdateTransaction(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var transaction domains.Transaction
-	if err := s.DB.First(&transaction, id).Error; err != nil {
+	if err := s.DB.Where("user_id = ?", userID).First(&transaction, id).Error; err != nil {
 		http.Error(w, "Transaction not found", http.StatusNotFound)
 		return
 	}
@@ -121,7 +148,6 @@ func (s *Server) UpdateTransaction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transaction.UserID = transactionRequest.UserID
 	transaction.CategoryID = transactionRequest.CategoryID
 	transaction.Amount = transactionRequest.Amount
 	transaction.Description = transactionRequest.Description
@@ -137,6 +163,13 @@ func (s *Server) UpdateTransaction(w http.ResponseWriter, r *http.Request) {
 
 // DeleteTransaction deletes a transaction by ID
 func (s *Server) DeleteTransaction(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -144,7 +177,7 @@ func (s *Server) DeleteTransaction(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := s.DB.Delete(&domains.Transaction{}, id).Error; err != nil {
+	if err := s.DB.Where("user_id = ?", userID).Delete(&domains.Transaction{}, id).Error; err != nil {
 		http.Error(w, "Failed to delete transaction", http.StatusInternalServerError)
 		return
 	}
@@ -154,6 +187,13 @@ func (s *Server) DeleteTransaction(w http.ResponseWriter, r *http.Request) {
 
 // GetBalance calculates the total balance from income and expense within a time range
 func (s *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	start := r.URL.Query().Get("start")
 	end := r.URL.Query().Get("end")
 
@@ -161,7 +201,7 @@ func (s *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	// Calculate total income
 	if err := s.DB.Model(&domains.Transaction{}).
-		Where("type = ? AND created_at BETWEEN ? AND ?", "income", start, end).
+		Where("user_id = ? AND type = ? AND created_at BETWEEN ? AND ?", userID, "income", start, end).
 		Select("SUM(amount)").Scan(&totalIncome).Error; err != nil {
 		http.Error(w, "Failed to calculate total income", http.StatusInternalServerError)
 		return
@@ -169,7 +209,7 @@ func (s *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	// Calculate total expense
 	if err := s.DB.Model(&domains.Transaction{}).
-		Where("type = ? AND created_at BETWEEN ? AND ?", "expense", start, end).
+		Where("user_id = ? AND type = ? AND created_at BETWEEN ? AND ?", userID, "expense", start, end).
 		Select("SUM(amount)").Scan(&totalExpense).Error; err != nil {
 		http.Error(w, "Failed to calculate total expense", http.StatusInternalServerError)
 		return
@@ -183,13 +223,20 @@ func (s *Server) GetBalance(w http.ResponseWriter, r *http.Request) {
 
 // GetTotalIncome calculates the total income within a time range
 func (s *Server) GetTotalIncome(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	start := r.URL.Query().Get("start")
 	end := r.URL.Query().Get("end")
 
 	var totalIncome float64
 
 	if err := s.DB.Model(&domains.Transaction{}).
-		Where("type = ? AND created_at BETWEEN ? AND ?", "income", start, end).
+		Where("user_id = ? AND type = ? AND created_at BETWEEN ? AND ?", userID, "income", start, end).
 		Select("SUM(amount)").Scan(&totalIncome).Error; err != nil {
 		http.Error(w, "Failed to calculate total income", http.StatusInternalServerError)
 		return
@@ -200,13 +247,20 @@ func (s *Server) GetTotalIncome(w http.ResponseWriter, r *http.Request) {
 
 // GetTotalExpense calculates the total expense within a time range
 func (s *Server) GetTotalExpense(w http.ResponseWriter, r *http.Request) {
+
+	userID, ok := r.Context().Value("id").(int)
+	if !ok {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
+		return
+	}
+
 	start := r.URL.Query().Get("start")
 	end := r.URL.Query().Get("end")
 
 	var totalExpense float64
 
 	if err := s.DB.Model(&domains.Transaction{}).
-		Where("type = ? AND created_at BETWEEN ? AND ?", "expense", start, end).
+		Where("user_id = ? AND type = ? AND created_at BETWEEN ? AND ?", userID, "expense", start, end).
 		Select("SUM(amount)").Scan(&totalExpense).Error; err != nil {
 		http.Error(w, "Failed to calculate total expense", http.StatusInternalServerError)
 		return

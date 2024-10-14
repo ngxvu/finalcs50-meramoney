@@ -1,9 +1,10 @@
 package server
 
 import (
+	auth "meramoney/backend/infrastructure/middlewares"
+
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
-	auth "meramoney/backend/infrastructure/middlewares"
 )
 
 // Server struct with a reference to the database connection
@@ -12,6 +13,7 @@ type Server struct {
 }
 
 func (s *Server) Routes(r *mux.Router) {
+	r.HandleFunc("/upload", s.UploadHandler).Methods("POST")
 	r.HandleFunc("/migrate", s.Migration).Methods("POST")
 	r.HandleFunc("/sign-up", s.SignUp).Methods("POST")
 	r.HandleFunc("/login", s.Login).Methods("POST")
@@ -45,4 +47,5 @@ func (s *Server) Routes(r *mux.Router) {
 	protected.HandleFunc("/balance", s.GetBalance).Methods("GET")
 	protected.HandleFunc("/total-income", s.GetTotalIncome).Methods("GET")
 	protected.HandleFunc("/total-expense", s.GetTotalExpense).Methods("GET")
+
 }

@@ -5,6 +5,8 @@ import (
 	"log"
 	"meramoney/backend/internal/database"
 	"meramoney/backend/internal/server"
+	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 
@@ -40,6 +42,7 @@ func main() {
 	r := mux.NewRouter()
 	srv.Routes(r)
 
+	r.PathPrefix("/uploads/").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("uploads"))))
 	// Define CORS options
 	corsOptions := handlers.AllowedOrigins([]string{"http://localhost:3000"})
 	corsHeaders := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
@@ -47,6 +50,14 @@ func main() {
 
 	// Initialize and start the HTTP server with CORS support
 	httpServer := server.NewServer(handlers.CORS(corsOptions, corsHeaders, corsMethods)(r))
+
+	uploadsDir := "uploads"
+	if _, err := os.Stat(uploadsDir); os.IsNotExist(err) {
+		err := os.Mkdir(uploadsDir, os.ModePerm)
+		if err != nil {
+			log.Fatalf("Failed to create uploads directory: %v", err)
+		}
+	}
 
 	err = httpServer.ListenAndServe()
 	if err != nil {

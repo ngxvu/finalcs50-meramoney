@@ -24,6 +24,7 @@ type Category struct {
 	UserID      int    `gorm:"not null" json:"user_id"`
 	Name        string `gorm:"type:varchar(100);not null" json:"name"`
 	Description string `gorm:"type:text" json:"description"`
+	Image       string `gorm:"type:text" json:"image"`
 }
 
 type Transaction struct {
